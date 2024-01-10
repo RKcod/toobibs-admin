@@ -1,0 +1,55 @@
+<div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class=" text-primary">
+            <th>
+                Nom
+            </th>
+            <th>
+                Prénom
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Tel.
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Actions
+            </th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let u of users">
+                <td>
+                    {{u.first_name == null ? "N/A" : u.first_name}}
+                </td>
+                <td>
+                    {{u.last_name == null ? "N/A" : u.last_name}}
+                </td>
+                <td>
+                    {{u.email == null ? "N/A" : u.email}}
+                </td>
+                <td>
+                    {{u.phone == null ? "N/A" : u.phone}}
+                </td>
+                <td>
+                    {{u.user_type == "ADMIN" ? "Administrateur" : (u.user_type == "DOCTOR" ? "Docteur": (u.user_type == "PATIENT" ? "Patient" : (u.user_type == "CENTER" ? "Centre de santé" : "N/A")))}}
+                </td>
+                <td>
+                    <a style="cursor:pointer" [routerLink]="['/user-details']" [queryParams]="{id: u.id}" >Voir le profil</a><br>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <mat-paginator [length]="meta.pagination.count"
+                       [pageSize]="meta.pagination.per_page"
+                       [pageIndex]="meta.pagination.current_page-1"
+                       (page)="pageEvent = loadUsers($event)">
+        </mat-paginator>
+    </div>
+</div>

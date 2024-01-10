@@ -1,0 +1,22 @@
+<ngx-spinner></ngx-spinner>
+<div class="card card-stats" style="width: 400px; margin:auto; margin-top: 10%;">
+    <div class="card-header text-center">
+        <img src="/assets/img/logo/logo_toobib_noir.png" width="200" style="margin: auto; margin-top: 20px;"/><br><br>
+        <h4 class="card-title">
+            <small>Connectez-vous à l'espace d'administration de Toobib</small>
+        </h4>
+    </div>
+    <div class="card-body">
+        <form (ngSubmit)="login()">
+            <mat-form-field class="example-full-width">
+                <input matInput type="email" required placeholder="Email" name="email" [(ngModel)]="data.username">
+            </mat-form-field>
+            <br>
+            <mat-form-field class="example-full-width">
+                <input matInput type="password" required placeholder="Mot de passe" name="password" [(ngModel)]="data.password">
+            </mat-form-field>
+            <br>
+            <button mat-raised-button type="submit" class="btn btn-primary pull-right">Se connecter</button>
+        </form>
+    </div>
+</div>

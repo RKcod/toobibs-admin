@@ -1,0 +1,67 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Liste des centres
+
+                    <button mat-raised-button type="button" class="btn btn-warning pull-right" (click)="openEdit(null)">Ajouter</button>
+                </h4>
+                <p class="card-category"> </p>
+            </div>
+            <div class="card-body">
+                <h4 *ngIf="centers.length==0">Aucun centre</h4>
+                <div class="table-responsive" *ngIf="centers.length>0">
+                    <table class="table">
+                        <thead class=" text-primary">
+                        <th>
+                            Nom
+                        </th>
+                        <th>
+                            Adresse
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Tel.
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let u of centers">
+                            <td>
+                                {{u.name == null ? "N/A" : u.name}}
+                            </td>
+                            <td>
+                                {{u.address == null ? "N/A" : u.address}}
+                            </td>
+                            <td>
+                                {{u.email == null ? "N/A" : u.email}}
+                            </td>
+                            <td>
+                                {{u.phone == null ? "N/A" : u.phone}}
+                            </td>
+                            <td>
+                                <!--  href="https://www.google.com/maps/search/?api=1&query={{u.lat}},{{u.lng}}" target="_blank" -->
+                                <a style="cursor:pointer" (click)="openDoctors(u.real_id)" >Plus de Détails</a><br>
+                                <a style="cursor:pointer" (click)="openMap(u.lat, u.lng)">Ouvrir la map</a><br>
+                                <a  style="cursor:pointer" (click)="openEdit(u.id)">Modifier</a><br>
+                                <a  style="cursor:pointer" (click)="delete(u.id)">Supprimer</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <mat-paginator [length]="meta.pagination.total"
+                                   [pageSize]="meta.pagination.per_page"
+                                   [pageIndex]="meta.pagination.current_page-1"
+                                   (page)="pageEvent = loadCenters($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

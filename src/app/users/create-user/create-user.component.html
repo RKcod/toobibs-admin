@@ -1,0 +1,75 @@
+<div>
+            <div class="card-header card-header-danger">
+                <span (click)="closeDialog('cancel')" class="pull-right" style="cursor:pointer;">x</span>
+                <h4 class="card-title ">Ajouter/Editer un utilisateur</h4>
+                <p class="card-category"> </p>
+            </div>
+            <div class="card-body">
+                <form (ngSubmit)="saveUser()" >
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                            <input matInput type="text" required placeholder="Nom" name="nom" [(ngModel)]="user.first_name">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput type="text" required placeholder="Prénom" name="prenom" [(ngModel)]="user.last_name">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput type="email" required placeholder="Email" name="email" [(ngModel)]="user.email">
+                        </mat-form-field>
+                        <mat-radio-group aria-label="Sexe" name="gender" [(ngModel)]="user.gender">
+                            <mat-label>Sexe</mat-label><br>
+                            <mat-radio-button value="Masculin" checked>Masculin</mat-radio-button>
+                            <mat-radio-button value="Feminin">Feminin</mat-radio-button>
+                        </mat-radio-group><br><br>
+
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Type de profil</mat-label>
+                            <select matNativeControl name="type" [(ngModel)]="user.user_type" required>
+                                <option value="ADMIN">Administrateur</option>
+                                <option value="DOCTOR">Docteur</option>
+                                <option value="PATIENT">Patient</option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field  floatLabel="always" class="example-full-width tel">
+                            <mat-label>Tel.</mat-label>
+                            <input matInput type="text" required  id="phone" name="tel" style="padding-left:55px;">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput type="text" placeholder="Adresse" name="address" [(ngModel)]="user.address">
+                        </mat-form-field>
+
+                        
+                        <mat-form-field class="example-full-width" *ngIf="user.user_type == 'ADMIN'">
+                            <input matInput type="password" placeholder="Mot de passe" name="password" [(ngModel)]="user.password">
+                        </mat-form-field>
+                        <!--mat-form-field class="example-full-width">
+                            <input matInput type="text"  placeholder="Spécialité">
+                        </mat-form-field-->
+                        <mat-form-field class="example-full-width" *ngIf="user.user_type == 'DOCTOR'">
+                            <mat-label>Spécialité</mat-label>
+                            <select matNativeControl name="specialite" [(ngModel)]="user.speciality" required>
+                                <option [value]="s.real_id" *ngFor="let s of specialities">{{s.name}}</option>
+                            </select>
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width" *ngIf="user.user_type == 'DOCTOR'">
+                            <input matInput type="text"  placeholder="Numéro d'ordre des médecins" name="doctor_serial_number" [(ngModel)]="user.doctor_serial_number">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width" *ngIf="user.user_type == 'DOCTOR'">
+                            <mat-label>Centre de santé</mat-label>
+                            <select matNativeControl name="center_id" [(ngModel)]="user.centers_id">
+                                <option value="0">Aucun</option>
+                                <option *ngFor="let c of centers" [value]="c.real_id">{{c.name}}</option>
+                            </select>
+                        </mat-form-field>
+                        <mat-slide-toggle [(ngModel)]="user.status" name="status"  >Statut ({{user.status? 'Activé' : 'Désactivé'}}) </mat-slide-toggle>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button mat-raised-button type="submit" class="btn btn-warning">Enregistrer</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+</div>

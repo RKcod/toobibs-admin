@@ -1,0 +1,13 @@
+<agm-map [latitude]="lat" [zoom]="zoom" [longitude]="lng">
+    <agm-marker [latitude]="lat" [longitude]="lng" *ngIf="data.draggable" [markerDraggable]="true"
+                (dragEnd)="markerDragEnd($event)"></agm-marker>
+    <agm-marker [latitude]="lat" [longitude]="lng" *ngIf="!data.draggable"></agm-marker>
+</agm-map>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <button mat-raised-button type="button" class="btn btn-primary " (click)="savePos()" *ngIf="data.draggable">
+            Enregistrer
+        </button>
+        <button mat-raised-button type="button" class="btn btn-warning" (click)="closeDialog('cancel')">Fermer</button>
+    </div>
+</div>

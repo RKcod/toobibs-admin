@@ -1,0 +1,52 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Liste des spécialités
+
+                    <button mat-raised-button type="button" class="btn btn-warning pull-right" (click)="openEdit(null)">Ajouter</button>
+                </h4>
+                <p class="card-category"> </p>
+            </div>
+            <div class="card-body">
+                <h4 *ngIf="specialities.length==0">Aucune spécialité</h4>
+                <div class="table-responsive" *ngIf="specialities.length>0">
+                    <table class="table">
+                        <thead class=" text-primary">
+                        <th>
+                            Nom
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let u of specialities">
+                            <td>
+                                {{u.name == null ? "N/A" : u.name}}
+                            </td>
+                            <td>
+                                {{u.description == null ? "N/A" : u.description}}
+                            </td>
+                            <td>
+                                <a  style="cursor:pointer" (click)="openEdit(u.id)">Modifier</a><br>
+                                <a  style="cursor:pointer" (click)="delete(u.id)">Supprimer</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <mat-paginator [length]="meta.pagination.total"
+                                   [pageSize]="meta.pagination.per_page"
+                                   [pageIndex]="meta.pagination.current_page-1"
+                                   (page)="pageEvent = loadSpecialities($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

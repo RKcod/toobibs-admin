@@ -1,0 +1,167 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Paramètres
+
+                </h4>
+                <p class="card-category">
+                </p>
+            </div>
+            <div class="card-body">
+                <mat-tab-group>
+                    <mat-tab label="Media">
+                        <div class="row" style="padding:40px;">
+                            <div class="col-md-6">
+                                <h4>Liste des médias</h4><br>
+                                <div *ngIf="medias.length == 0">Aucune donnée</div>
+                                <div *ngFor="let media of medias; let i = index">
+                                    <div>
+                                        <a [href]="media?.link"> {{media?.title}} </a>
+                                        <p> {{ media?.description }} <br>
+                                            <a style="cursor:pointer;" (click)="edit(media.dataId)">Modifier</a> | <a style="cursor:pointer;" (click)="deleteD(media.dataId)">Supprimer</a>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Ajouter/Editer des éléments pour Médias et Presse</h4>
+                                <form class="example-form" (ngSubmit)="onSubmit()" >
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Titre </mat-label>
+                                        <input matInput [(ngModel)] ='data.title' name="title" placeholder="Titre" >
+                                    </mat-form-field>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Lien </mat-label>
+                                        <input matInput [(ngModel)] ='data.link' name="link" placeholder="Lien" >
+                                    </mat-form-field>
+
+
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Description</mat-label>
+                                        <textarea [(ngModel)] ='data.description' name="description" matInput placeholder="Description"></textarea>
+                                    </mat-form-field>
+                                    <button mat-raised-button color="primary" style="float: right;">Enregistrer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Carreers">
+                        <div class="row" style="padding:40px;">
+                            <div class="col-md-6">
+                                <h4>Liste des carrières</h4><br>
+                                <div *ngIf="carreers.length == 0">Aucune donnée</div>
+                                <div *ngFor="let media of carreers; let i = index">
+                                    <div>
+                                        {{media?.title}}<br>
+                                        Postuler à : {{media.mail}}<br>
+                                        Délais : {{media.date}}<br>
+                                        <p> {{ media?.description }} <br>
+                                            <a style="cursor:pointer;" (click)="editCarreers(media.dataId)">Modifier</a> | <a style="cursor:pointer;" (click)="deleteCarreers(media.dataId)">Supprimer</a>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Ajouter/Editer des carrières</h4>
+                                <form class="example-form" (ngSubmit)="onSubmitCarreers()" >
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Titre </mat-label>
+                                        <input matInput [(ngModel)] ='dataCarreers.title' name="title" placeholder="Titre" >
+                                    </mat-form-field>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Date de délais </mat-label>
+                                        <input matInput [(ngModel)] ='dataCarreers.date' type="date" name="date" placeholder="Délais" >
+                                    </mat-form-field>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Mail pour candidature </mat-label>
+                                        <input matInput [(ngModel)] ='dataCarreers.mail' type="mail" name="mail" placeholder="Email" >
+                                    </mat-form-field>
+
+
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Description</mat-label>
+                                        <textarea [(ngModel)] ='dataCarreers.description' name="description" matInput placeholder="Description"></textarea>
+                                    </mat-form-field>
+                                    <button mat-raised-button color="primary" style="float: right;">Enregistrer</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </mat-tab>
+                    <mat-tab label="FAQ">
+                        <div class="row" style="padding:40px;">
+                            <div class="col-md-6">
+                                <h4>Liste des faqs</h4><br>
+                                <div *ngIf="faqs.length == 0">Aucune donnée</div>
+                                <div *ngFor="let faq of faqs; let i = index">
+                                    <div>
+                                         {{faq?.question}}
+                                        <p> {{ faq?.answer }} <br>
+                                            <a style="cursor:pointer;" (click)="editFaq(faq.dataId)">Modifier</a> | <a style="cursor:pointer;" (click)="deleteFaq(faq.dataId)">Supprimer</a>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Ajouter/Editer des éléments pour FAQ</h4>
+                                <form class="example-form" (ngSubmit)="onSubmitFaq()" >
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Titre </mat-label>
+                                        <input matInput [(ngModel)] ='dataFaq.question' name="question" placeholder="Question" >
+                                    </mat-form-field>
+
+
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Description</mat-label>
+                                        <textarea [(ngModel)] ='dataFaq.answer' name="answer" matInput placeholder="Réponse"></textarea>
+                                    </mat-form-field>
+                                    <button mat-raised-button color="primary" style="float: right;">Enregistrer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Contact">
+
+                        <div class="row" style="padding:40px;">
+                            <div class="col-md-6">
+                                <h4>Informations de contact</h4>
+                                <form class="example-form" (ngSubmit)="onSubmitContact()" >
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Adresse </mat-label>
+                                        <input matInput [(ngModel)] ='dataContact.location' name="title"  >
+                                    </mat-form-field>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Email </mat-label>
+                                        <input matInput [(ngModel)] ='dataContact.email' type="text" name="email"  >
+                                    </mat-form-field>
+                                    <mat-form-field class="example-full-width">
+                                        <mat-label>Téléphone </mat-label>
+                                        <input matInput [(ngModel)] ='dataContact.phone' type="text" name="phone" >
+                                    </mat-form-field>
+                                    <div class="example-full-width">
+                                        <mat-label>Fichier Condition générale d'utilisation </mat-label>
+                                        <input  type="file" (change)="selectCGUFile($event)">
+                                        <!--input matInput [(ngModel)] ='dataContact.cgu_pdf' type="text" name="cgu" -->
+                                    </div>
+                                    <div class="example-full-width">
+                                        <mat-label>Fichier Condition générale de ventes </mat-label>
+                                        <input  type="file" (change)="selectCGVFile($event)">
+                                        <!--input matInput [(ngModel)] ='dataContact.cgv_pdf' type="text" name="cgv" -->
+                                    </div>
+
+
+                                    <button mat-raised-button color="primary" style="float: right;">Enregistrer</button>
+                                </form>
+                            </div>
+                        </div></mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>
+

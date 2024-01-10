@@ -1,0 +1,34 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">
+                    SMS Personalisé
+                </h4>
+                <p class="card-category">
+                </p>
+            </div>
+            <div class="card-body">
+                <div class="row mt-2 p-2" style="height: 50vh;">
+                    <div class="col-md-6" style="height: 50vh; overflow: auto">
+                        <ul class="list-group">
+                            <a class="list-group-item list-group-item-action "
+                                *ngFor="let smsItem of smsList; let i = index"
+                                [class]="smsItem?.message === sms.message ? 'active': ''"
+                                (click)="onSelectSms(smsItem?.id)"> {{ smsItem?.title }} </a>
+
+                        </ul>
+                    </div>
+                    <div class="col-md-6" style="border: 1px solid rgba(10,110,189,0.19);">
+                        <form #f="ngForm" (ngSubmit)="updateSMS()">
+                            <textarea class="form-control" [(ngModel)]="sms.message" name="message"
+                                placeholder="Saisir le sms ici...  " style="height: 40vh !important;"></textarea>
+                            <button class="btn btn-primary" style="float:right;">Sauvegarder</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

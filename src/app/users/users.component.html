@@ -1,0 +1,80 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <input type="text" class="form-control"  placeholder="Rechercher par Noms" (keyup)="search($event)">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Liste des utilisateurs
+
+                    <button mat-raised-button type="button" class="btn btn-warning pull-right" (click)="openEdit(null)">Ajouter</button>
+                </h4>
+                <p class="card-category"> </p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                        <th>
+                            Nom
+                        </th>
+                        <th>
+                            Prénom
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Tel.
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let u of users">
+                            <td>
+                                {{u.first_name == null ? "N/A" : u.first_name}}
+                            </td>
+                            <td>
+                                {{u.last_name == null ? "N/A" : u.last_name}}
+                            </td>
+                            <td>
+                                {{u.email == null ? "N/A" : u.email}}
+                            </td>
+                            <td>
+                                {{u.phone == null ? "N/A" : u.phone}}
+                            </td>
+                            <td>
+                                {{u.user_type == "ADMIN" ? "Administrateur" : (u.user_type == "DOCTOR" ? "Docteur"+(u.confirmed == 2 ? "(Rejeter)": ""): (u.user_type == "PATIENT" ? "Patient" : (u.user_type == "CENTER" ? "Centre de santé" : "N/A")))}}<br>
+                                {{u.user_type == "DOCTOR" && u.center != null ? "Centre de santé : "+ u.center.data.name  : ""}}
+                            </td>
+                            <td>
+                                <a style="cursor:pointer" [routerLink]="['/user-details']" [queryParams]="{id: u.id}" >Plus de Détails</a><br>
+                                <a  style="cursor:pointer" (click)="openEdit(u.id)">Modifier</a><br>
+                                <a  style="cursor:pointer" (click)="delete(u.id)">Supprimer</a>
+                                <div *ngIf="u.user_type == 'DOCTOR' && (u.confirmed == 0 || u.confirmed == 4)">
+                                    <br><a  style="cursor:pointer; color: #fff;padding: 10px;"class="btn btn-success" (click)="validate(u.id, 1)">Valider le médécin</a>
+                                    <br><a  style="cursor:pointer; color: #fff;padding: 10px;"class="btn btn-danger" (click)="validate(u.id, 2)">Rejeter le médécin</a>
+                                </div>
+                                <div *ngIf="u.user_type == 'DOCTOR'">
+                                    <br><a *ngIf="u.display_home == 0"  style="cursor:pointer; color: #fff;padding: 10px;"class="btn btn-success" (click)="changeDisplay(u.id, 1)">Afficher sur la page pro</a>
+                                    <br><a *ngIf="u.display_home == 1"  style="cursor:pointer; color: #fff;padding: 10px;"class="btn btn-danger" (click)="changeDisplay(u.id, 0)">Retirer de la page pro</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                   
+                    <mat-paginator [length]="meta.pagination.total"
+                                   [pageSize]="meta.pagination.per_page"
+                                   [pageIndex]="meta.pagination.current_page-1"
+                                   (page)="pageEvent = loadUsers($event)"
+                                    [showFirstLastButtons]="true">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

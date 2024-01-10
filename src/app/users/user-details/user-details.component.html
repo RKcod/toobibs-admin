@@ -1,0 +1,259 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7">
+
+
+
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+
+                            <mat-tab-group backgroundColor="primary">
+                                <mat-tab label="Consultations" (click)="loadConsultations(null)">
+                                    <div style="padding: 16px;">
+                                        <p *ngIf="!loader_consultation && consultations.length == 0">Aucune consultation effectuée</p>
+                                        <div *ngIf="user?.user_type =='DOCTOR' && consultations.length > 0">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-3">
+
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Mois</mat-label>
+                                                        <select matNativeControl name="month" [(ngModel)]="month" required>
+                                                            <option [value]="index" *ngFor="let m of months; index as index">{{m}}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Année</mat-label>
+                                                        <select matNativeControl name="month" [(ngModel)]="year" required>
+                                                            <option [value]="y" *ngFor="let y of years">{{y}}</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-md-3 text-center">
+                                                    <button mat-raised-button type="button" (click)="loadSum(true)" class="btn btn-warning">Afficher frais</button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    Gain du mois en cours : <h2>{{api.formatNumber(gains.cost)}} {{gains.currency}}</h2>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    Frais Toobib : <h2>{{api.formatNumber(gains.fees)}} {{gains.currency}}</h2>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div *ngIf="loader_consultation">Chargement des consultations en cours....</div>
+                                        <div class="table-responsive"*ngIf="!loader_consultation && consultations.length > 0">
+                                            <table class="table">
+                                                <thead class=" text-primary">
+                                                <th>Nom & Prénom</th>
+                                                <th>Tel.</th>
+                                                <th>Type</th>
+                                                <th>Date</th>
+                                                <th>Coûts</th>
+                                                </thead>
+                                                <tbody>
+                                                <tr *ngFor="let c of consultations">
+                                                    <td>{{c.first_name}} {{c.last_name}}</td>
+                                                    <td>{{c.phone}}</td>
+                                                    <td>{{c.type}}</td>
+                                                    <td>{{c.date}}</td>
+                                                    <td>{{api.formatNumber(c.cost)}} {{c.currency}}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <mat-paginator [length]="meta.pagination.total"
+                                                           [pageSize]="meta.pagination.per_page"
+                                                           [pageIndex]="meta.pagination.current_page-1"
+                                                           (page)="pageEvent = loadConsultations($event)">
+                                            </mat-paginator>
+                                        </div>
+                                    </div>
+
+                                </mat-tab>
+                                <mat-tab label="Détails" (click)="loadUserMetas()" *ngIf="user != null && user?.user_type == 'DOCTOR'">
+                                    <div style="padding: 16px;">
+                                        <span *ngIf="loader_user_metas">Chargement des détails en cours....</span>
+                                        <p *ngIf="!loader_user_metas && usermetas.length == 0">Aucun détail ajouter</p>
+                                    </div>
+                                    <!--
+                                     at: "Hôpital de Deido"
+created_at: {date: "2020-07-23 00:00:00.000000", timezone_type: 3, timezone: "UTC"}
+description: "J'ai exercé dans cet hôpital en tant que chirurgien "
+doctor_id: 3
+end_year: "2019"
+id: "qnwmkv5704blag6r"
+object: "UserMeta"
+real_id: 1
+start_year: "2018"
+title: "Docteur à Hôpital de Deido"
+type: "EXPERIENCE"
+                                     -->
+
+                                    <div *ngFor="let e of usermetas; index as i">
+                                            <p>
+                                                <span style="font-size: 1.2em;">{{e.start_year}} - {{e.end_year}}</span><br>
+                                                <span style="font-weight: bold;">{{e.title}} : {{e.at}}</span><br>
+                                                <span>{{e.type}}</span><br>
+                                                <span>{{e.description}}</span><br>
+                                            </p>
+                                            <hr *ngIf="i+1 < usermetas.length">
+                                    </div>
+
+                                 </mat-tab>
+                                
+                                <mat-tab label="Paramètres" *ngIf="user != null && user?.user_type == 'DOCTOR'">
+
+                                    <mat-tab-group>
+                                        <mat-tab label="Mes paramètres">
+                                            <div style="padding: 16px;">
+                                                <span *ngIf="loader_settings">Chargement des paramètres en cours....</span>
+                                                <div *ngIf="!loader_settings && settings != null">
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Frais de consultation en cabinet</mat-label>
+                                                        <input matInput type="text" disabled
+                                                            [value]="settings != null ? settings.price_cabinet_consultation : '0'" />
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Frais de consultation à domicile</mat-label>
+                                                        <input matInput type="text" disabled [value]="settings != null ? settings.price_house_consultation : '0'" />
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Frais de téléconsultation</mat-label>
+                                                        <input matInput type="text" disabled [value]="settings != null ? settings.price_teleconsultation : '0'" />
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Monnaie</mat-label>
+                                                        <input matInput type="text" disabled [value]="settings != null ? settings.currency : '0'" />
+                                                    </mat-form-field>
+                                            
+                                                    <h4>Configurer les frais de service pour ce docteur</h4>
+                                            
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Type de calcul de frais</mat-label>
+                                                        <select matNativeControl name="type" [(ngModel)]="setting_data.fees_type" required>
+                                                            <option value="PERCENT">Pourcentage</option>
+                                                            <option value="FIXED">Montant fixe</option>
+                                                        </select>
+                                                    </mat-form-field>
+                                            
+                                                    <mat-form-field class="example-full-width">
+                                                        <mat-label>Frais de service</mat-label>
+                                                        <input matInput name="fees" [(ngModel)]="setting_data.fees" type="text"
+                                                            [value]="settings != null ? settings.price_cabinet_consultation : '0'" />
+                                                    </mat-form-field>
+                                            
+                                                    <button mat-raised-button type="button" class="btn btn-warning" (click)="saveFees()">Enregistrer</button>
+                                                </div>
+                                            
+                                            </div>
+                                        </mat-tab>
+                                        <mat-tab label="Mes SMS Personalisé">
+                                            <div class="row mt-2 p-2" style="height: 50vh;">
+                                                <div class="col-md-6" style="height: 50vh; overflow: auto">
+                                                    <ul class="list-group">
+                                                        <a class="list-group-item list-group-item-action " *ngFor="let smsItem of smsList; let i = index"
+                                                            [class]="smsItem?.message === sms.message ? 'active': ''" (click)="onSelectSms(smsItem?.id)"> {{
+                                                            smsItem?.title }} </a>
+                                            
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6" style="border: 1px solid rgba(10,110,189,0.19);">
+                                                    <form #f="ngForm" (ngSubmit)="updateSMS()">
+                                                        <textarea class="form-control" [(ngModel)]="sms.message" name="message" placeholder="Saisir le sms ici...  "
+                                                            style="height: 40vh !important;"></textarea>
+                                                        <button class="btn btn-primary" style="float:right;">Sauvegarder</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </mat-tab>
+                                    </mat-tab-group>
+                                    
+
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card card-profile">
+                    <div class="card-avatar">
+                        <a href="javascript:void(0)">
+                            <img class="img" src="{{user == null ? '': api.WEB_BASED_URL+user.profile_picture}}"/>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-category text-gray">{{user == null ? '' : (user.user_type == "ADMIN" ? "Administrateur" : (user.user_type == "DOCTOR" ? "Docteur" : (user.user_type == "PATIENT" ? "Patient" : (user.user_type == "CENTER" ? "Centre de santé" : "N/A"))))}}<br> {{user!= null && user.user_type == "DOCTOR" && user.center != null ? "Centre de santé : "+ user.center.data.name  : ""}}</h6>
+                        <h4 class="card-title">{{user == null ? '' : user.first_name + " " + user.last_name}}</h4>
+                        <div class="row card-description">
+                            <div class="col-md-5 text-left">
+                                Nom:
+                            </div>
+                            <div class="col-md-7 text-left">
+                                {{user == null ? '' : user.first_name}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 text-left">
+                                Prénom:
+                            </div>
+                            <div class="col-md-7 text-left">
+                                {{user == null ? '' : user.last_name}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 text-left">
+                                Email:
+                            </div>
+                            <div class="col-md-7 text-left">
+                                {{user == null ? '' : user.email}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 text-left">
+                                Tel.:
+                            </div>
+                            <div class="col-md-7 text-left">
+                                {{user == null ? '' : user.phone}}
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="user != null && user?.user_type == 'DOCTOR'">
+                            <div class="col-md-5 text-left">
+                                Adresse:
+                            </div>
+                            <div class="col-md-7 text-left">
+                                {{user != null && user?.user_type == "DOCTOR" ? user.address : ''}}
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="user != null && user?.user_type == 'DOCTOR'">
+                            <div class="col-md-5 text-left">
+                                Spécialité:
+                            </div>
+                            <div class="col-md-7 text-left">
+                                {{user != null && user?.user_type == "DOCTOR" ? user.speciality_name.name : ''}}
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="user != null && user?.user_type == 'DOCTOR'">
+                            <div class="col-md-5 text-left">
+                                Numéro d'ordre des médecins:
+                            </div>
+                            <div class="col-md-7 text-left">
+                                {{user == null ? '': user.doctor_serial_number}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

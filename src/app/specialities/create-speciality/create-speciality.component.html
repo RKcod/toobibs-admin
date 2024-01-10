@@ -1,0 +1,30 @@
+<div>
+    <div class="card-header card-header-danger">
+        <span (click)="closeDialog('cancel')" class="pull-right" style="cursor:pointer;">x</span>
+        <h4 class="card-title ">Ajouter/Editer une spécialité</h4>
+        <p class="card-category"></p>
+    </div>
+    <div class="card-body">
+        <form (ngSubmit)="saveSpeciality()">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <mat-form-field class="example-full-width">
+                        <input matInput type="text" required placeholder="Nom" name="nom" [(ngModel)]="speciality.name">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <input matInput type="text" placeholder="Description (Facultatif)" name="description"
+                               [(ngModel)]="speciality.description">
+                    </mat-form-field>
+
+                </div>
+                <div class="col-md-12 text-center">
+                    <button mat-raised-button type="submit" class="btn btn-primary ">
+                        Enregistrer
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

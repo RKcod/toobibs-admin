@@ -1,0 +1,45 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Liste des consultations annulés
+
+                </h4>
+                <p class="card-category"> </p>
+            </div>
+            <div class="card-body">
+                <h4 *ngIf="consultations.length==0">Aucune consutation annuler</h4>
+                <div class="table-responsive" *ngIf="consultations.length>0">
+                    <table class="table">
+                        <thead class=" text-primary">
+                        <th>Nom & Prénom</th>
+                        <th>Tel.</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Coûts</th>
+                        <th>Actions</th>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let c of consultations">
+                            <td>Patient : {{c.first_name}} {{c.last_name}}<br>
+                                Médécin : <a style="cursor:pointer" [routerLink]="['/user-details']" [queryParams]="{id: c.doctor.data.id}" >{{c.doctor.data.first_name}} {{c.doctor.data.last_name}}</a></td>
+                            <td>{{c.phone}}</td>
+                            <td>{{c.type}}</td>
+                            <td>{{c.date}}</td>
+                            <td>{{c.cost}} {{c.currency}}</td>
+                            <td><a  style="cursor:pointer; color: #fff;padding: 10px;"class="btn btn-success" (click)="remboursser(c.id, 2)">Marquez comme rembourser</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <mat-paginator [length]="meta.pagination.total"
+                                   [pageSize]="meta.pagination.per_page"
+                                   [pageIndex]="meta.pagination.current_page-1"
+                                   (page)="pageEvent = loadConsultations($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
